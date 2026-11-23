@@ -1,0 +1,24 @@
+[package]
+name        = "ink-proto"
+description = "Binary wire protocol codec and frame types for the Ink database"
+version.workspace   = true
+edition.workspace   = true
+authors.workspace   = true
+license.workspace   = true
+repository.workspace = true
+
+[dependencies]
+thiserror.workspace  = true
+crc32fast.workspace  = true
+blake3.workspace     = true
+bytes.workspace      = true
+tokio.workspace      = true
+tokio-util.workspace = true
+serde.workspace      = true
+serde_json.workspace = true
+hex.workspace        = true
+uuid.workspace       = true
+
+[dev-dependencies]
+proptest.workspace = true
+anyhow.workspace   = true

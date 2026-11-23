@@ -1,0 +1,60 @@
+[workspace]
+members = [
+    "ink-core",
+    "ink-query",
+    "ink-server",
+    "ink-proto",
+    "ink-client",
+    "ink-browser",
+]
+resolver = "2"
+
+[workspace.package]
+version    = "0.1.0"
+edition    = "2021"
+authors    = ["The Ink Authors"]
+license    = "MIT OR Apache-2.0"
+repository = "https://github.com/ink-db/Ink"
+
+# Shared dependency versions — referenced by member crates with .workspace = true
+[workspace.dependencies]
+# Error handling
+thiserror  = "2"
+anyhow     = "1"
+# Hashing
+blake3     = "1"
+# Digital Signatures & Cryptography
+ed25519-dalek = { version = "2", features = ["rand_core"] }
+rand_core  = { version = "0.6", features = ["std"] }
+argon2     = "0.5"
+chacha20poly1305 = "0.10"
+zeroize    = { version = "1", features = ["derive"] }
+# CRC32 for frame integrity checks (error detection, not cryptographic)
+crc32fast  = "1"
+# JSON — the only payload format supported in the current format version
+serde      = { version = "1", features = ["derive"] }
+serde_json = "1"
+# CLI
+clap       = { version = "4", features = ["derive"] }
+regex-syntax = "0.8.12"
+rustyline  = "15"
+comfy-table = "7"
+# Asynchronous runtime and networking
+tokio      = { version = "1", features = ["full"] }
+tokio-util = { version = "0.7", features = ["codec"] }
+futures-util = { version = "0.3", features = ["sink"] }
+bytes      = "1"
+# Hex encoding for displaying hashes and public keys
+hex        = "0.4"
+# Timestamp display
+chrono     = { version = "0.4", features = ["serde"] }
+# UUID for database identity
+uuid       = { version = "1", features = ["v4"] }
+# Desktop GUI
+eframe     = "0.37"
+egui       = "0.37"
+rfd        = "0.18"
+fs2        = "0.4.3"
+# Testing
+tempfile   = "3"
+proptest   = "1"

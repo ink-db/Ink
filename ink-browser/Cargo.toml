@@ -1,0 +1,41 @@
+[package]
+name = "ink-browser"
+description = "Native cross-platform desktop GUI for browsing, operating, and cryptographically verifying Ink databases"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[[bin]]
+name = "ink-browser"
+path = "src/main.rs"
+
+[lib]
+name = "ink_browser"
+path = "src/lib.rs"
+
+[dependencies]
+ink-core = { path = "../ink-core" }
+ink-query = { path = "../ink-query" }
+ink-proto = { path = "../ink-proto" }
+ink-client = { path = "../ink-client" }
+
+thiserror.workspace = true
+anyhow.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+hex.workspace = true
+chrono.workspace = true
+uuid.workspace = true
+zeroize.workspace = true
+tokio.workspace = true
+
+# Desktop GUI & System integrations
+eframe.workspace = true
+egui.workspace = true
+rfd.workspace = true
+fs2.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

@@ -1,0 +1,9 @@
+{
+  "format_version": 0,
+  "created_at": 1795449524442648,
+  "database_id": "e9110045-ec61-4ca7-a41b-17e95b4a20c9",
+  "segment_size_bytes": 67108864,
+  "hash_algorithm": "blake3",
+  "signature_algorithm": "ed25519",
+  "next_global_id": 11
+}

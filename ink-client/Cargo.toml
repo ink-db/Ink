@@ -1,0 +1,32 @@
+[package]
+name        = "ink-client"
+description = "Client library and interactive shell for the Ink database"
+version.workspace   = true
+edition.workspace   = true
+authors.workspace   = true
+license.workspace   = true
+repository.workspace = true
+
+[dependencies]
+ink-proto   = { path = "../ink-proto" }
+ink-core    = { path = "../ink-core" }
+thiserror.workspace  = true
+blake3.workspace     = true
+ed25519-dalek.workspace = true
+rand_core.workspace  = true
+argon2.workspace     = true
+chacha20poly1305.workspace = true
+zeroize.workspace    = true
+tokio.workspace      = true
+tokio-util.workspace = true
+futures-util.workspace = true
+bytes.workspace      = true
+serde.workspace      = true
+serde_json.workspace = true
+hex.workspace        = true
+uuid.workspace       = true
+rustyline.workspace  = true
+comfy-table.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

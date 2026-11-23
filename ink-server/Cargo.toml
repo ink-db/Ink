@@ -1,0 +1,38 @@
+[package]
+name        = "ink-server"
+description = "CLI binary and IWP/1.0 TCP server daemon for the Ink database"
+version.workspace    = true
+edition.workspace    = true
+authors.workspace    = true
+license.workspace    = true
+repository.workspace = true
+
+[lib]
+name = "ink_server"
+path = "src/lib.rs"
+
+[[bin]]
+name = "ink"
+path = "src/main.rs"
+
+[dependencies]
+ink-core    = { path = "../ink-core" }
+ink-query   = { path = "../ink-query" }
+ink-proto   = { path = "../ink-proto" }
+ink-client  = { path = "../ink-client" }
+clap.workspace       = true
+anyhow.workspace     = true
+serde_json.workspace = true
+hex.workspace        = true
+chrono.workspace     = true
+tokio.workspace      = true
+tokio-util.workspace = true
+futures-util.workspace = true
+bytes.workspace      = true
+rand_core.workspace  = true
+ed25519-dalek.workspace = true
+blake3.workspace     = true
+uuid.workspace       = true
+
+[dev-dependencies]
+tempfile.workspace   = true

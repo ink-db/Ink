@@ -1,0 +1,28 @@
+[package]
+name        = "ink-core"
+description = "Core library for the Ink append-only tamper-evident database"
+version.workspace   = true
+edition.workspace   = true
+authors.workspace   = true
+license.workspace   = true
+repository.workspace = true
+
+[dependencies]
+thiserror.workspace  = true
+blake3.workspace     = true
+crc32fast.workspace  = true
+ed25519-dalek.workspace = true
+rand_core.workspace  = true
+serde.workspace      = true
+serde_json.workspace = true
+hex.workspace        = true
+uuid.workspace       = true
+
+[dev-dependencies]
+tempfile.workspace = true
+proptest.workspace = true
+anyhow.workspace   = true
+
+[[example]]
+name = "tamper_demo"
+path = "../examples/tamper_demo.rs"
