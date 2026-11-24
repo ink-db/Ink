@@ -57,7 +57,7 @@ The codec recognizes replication frame identifiers. The current workspace does n
 
 `HELLO_REQ` encodes a 32-byte client public key, a 16-bit protocol version, and 32-bit capability flags. `CHALLENGE` encodes a 16-byte database ID, a 32-byte nonce, a 16-byte session ID, and a 32-bit timeout. `AUTH_RESP` carries the session ID and a 64-byte Ed25519 signature. `AUTH_OK` carries the session ID, server version, and a length-prefixed roles JSON string. `AUTH_FAIL` carries a 16-bit error code and a length-prefixed UTF-8 reason.
 
-The challenge digest binds the database ID, session ID, and server nonce under the `INK-AUTH-v1` domain tag. The current TCP transport does not provide TLS channel binding or transport encryption; `AUDIT.md` describes this security boundary.
+The challenge digest binds the database ID, session ID, and server nonce under the `INK-AUTH-v1` domain tag. The current TCP transport does not provide TLS channel binding or transport encryption.
 
 ## Query and append messages
 

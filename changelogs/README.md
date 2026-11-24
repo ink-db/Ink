@@ -21,3 +21,4 @@
 | [0017](./0017-browser-verification-hardening.md) | Verification results and proof file handling | 2026-11-23 | Desktop |
 | [0018](./0018-markdown-reference-reorganization.md) | Markdown reference reorganization | 2026-11-23 | Documentation |
 | [0019](./0019-merkle-tree-demo-database.md) | Merkle tree view and demonstration database | 2026-11-23 | Desktop / Examples |
+| [0020](./0020-merkle-view-pan-zoom-getting-started.md) | Merkle view pan/zoom, audit path tracing, and getting started guide | 2026-11-24 | Desktop / Documentation / Integrity |

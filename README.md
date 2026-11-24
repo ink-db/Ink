@@ -23,6 +23,7 @@ Ink is an append-only database written in Rust. Records are signed with Ed25519,
 
 ## Reference
 
+- [Getting Started](docs/GETTING_STARTED.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Storage format](docs/FORMAT.md)
 - [Query language](docs/QUERY_LANGUAGE.md)

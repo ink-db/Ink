@@ -79,3 +79,49 @@ impl VerifyView {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::LocalBackend;
+    use ink_core::auth::Role;
+    use ink_core::{Keypair, Store};
+    use tempfile::tempdir;
+
+    #[test]
+    fn test_verify_view_initial_state() {
+        let view = VerifyView::default();
+        assert!(view.result.is_none());
+        assert!(view.error.is_none());
+    }
+
+    #[test]
+    fn test_verify_view_run_with_backend() {
+        let dir = tempdir().expect("tempdir");
+        let admin_kp = Keypair::generate();
+        let (mut store, _) =
+            Store::init_with_admin(dir.path(), Some(admin_kp.clone())).expect("init");
+
+        // Grant admin Reader on * so verification is authorized
+        store
+            .grant(
+                &admin_kp,
+                admin_kp.public_key(),
+                "admin",
+                Role::Reader,
+                vec!["*".into()],
+                None,
+            )
+            .expect("grant");
+        drop(store);
+
+        let backend = LocalBackend::open(dir.path(), admin_kp).expect("open backend");
+
+        let mut view = VerifyView::default();
+        view.run(&backend, None);
+        assert!(view.error.is_none());
+        let res = view.result.as_ref().expect("result");
+        assert!(res.is_valid);
+        assert!(res.errors.is_empty());
+    }
+}

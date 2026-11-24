@@ -102,10 +102,7 @@ impl ConnectionView {
                 // Tab selection
                 ui.horizontal(|ui| {
                     if ui
-                        .selectable_label(
-                            self.tab == ConnectionTab::Local,
-                            "Open Local Database",
-                        )
+                        .selectable_label(self.tab == ConnectionTab::Local, "Open Local Database")
                         .clicked()
                     {
                         self.tab = ConnectionTab::Local;

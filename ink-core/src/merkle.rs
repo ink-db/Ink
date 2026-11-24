@@ -150,8 +150,7 @@ impl MerkleTree {
 
             let split = largest_power_of_2_less_than(leaves.len());
             let (left_index, left_hash) = append_subtree(&leaves[..split], start, nodes);
-            let (right_index, right_hash) =
-                append_subtree(&leaves[split..], start + split, nodes);
+            let (right_index, right_hash) = append_subtree(&leaves[split..], start + split, nodes);
             let hash = hash_children(&left_hash, &right_hash);
             nodes[node_index].hash = hash;
             nodes[node_index].left = Some(left_index);
@@ -529,5 +528,33 @@ mod tests {
             !verify_consistency(&bad_proof),
             "Tampered consistency proof must fail"
         );
+    }
+
+    #[test]
+    fn test_visual_nodes_structure() {
+        let mut tree = MerkleTree::new();
+        assert!(tree.visual_nodes().is_empty());
+
+        let h0 = fake_record_hash(0);
+        tree.append(&h0);
+        let nodes1 = tree.visual_nodes();
+        assert_eq!(nodes1.len(), 1);
+        assert_eq!(nodes1[0].leaf_index, Some(0));
+        assert_eq!(nodes1[0].hash, hash_leaf(&h0));
+        assert_eq!(nodes1[0].hash, tree.root_hash());
+        assert!(nodes1[0].left.is_none());
+        assert!(nodes1[0].right.is_none());
+
+        let h1 = fake_record_hash(1);
+        let h2 = fake_record_hash(2);
+        tree.append(&h1);
+        tree.append(&h2);
+        let nodes3 = tree.visual_nodes();
+        assert_eq!(nodes3.len(), 5);
+        // Root matches tree root
+        assert_eq!(nodes3[0].hash, tree.root_hash());
+        assert!(nodes3[0].leaf_index.is_none());
+        assert!(nodes3[0].left.is_some());
+        assert!(nodes3[0].right.is_some());
     }
 }

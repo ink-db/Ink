@@ -55,7 +55,7 @@ IQL payloads are JSON objects. Supported literal types in filter expressions:
 
 Append a new record to a table.
 
-```
+```sql
 APPEND TO "<table>" { <json_object> }
 APPEND TO "<table>" { <json_object> } SIGNED WITH "<key_path>"
 ```
@@ -75,7 +75,7 @@ APPEND TO "access_log" { user: "alice", action: "login", ip: "10.0.0.1" } SIGNED
 
 Query records. The result is always a subset of the immutable log — no mutation occurs.
 
-```
+```sql
 READ FROM "<table>"
 READ FROM "<table>" WHERE <filter>
 READ FROM "<table>" WHERE <filter> ORDER BY <field> [NEWEST FIRST | OLDEST FIRST | ASC | DESC]
@@ -96,7 +96,7 @@ READ FROM "sales" WHERE amount > 1000 ORDER BY date NEWEST FIRST LIMIT 10
 
 #### Filter Expressions
 
-```
+```ebnf
 <filter>  ::= <expr> (AND <expr>)*
             | <expr> (OR <expr>)*
             | NOT <expr>
@@ -135,7 +135,7 @@ These fields are set by Ink and are always available in filters and ORDER BY:
 
 Append a correction record that logically supersedes an existing record. The original record is **never modified**.
 
-```
+```sql
 CORRECT record #<id> WITH { <json_object> }, reason: "<explanation>"
 CORRECT record #<id> WITH { <json_object> }, reason: "<explanation>" SIGNED WITH "<key_path>"
 ```
@@ -157,7 +157,7 @@ CORRECT record #17 WITH { status: "refunded" }, reason: "customer requested refu
 
 Show a record and all subsequent corrections to it, in order.
 
-```
+```sql
 HISTORY OF record #<id>
 ```
 
@@ -174,7 +174,7 @@ Output: the original record #42, followed by any records that corrected it, in c
 
 Verify cryptographic integrity of a table or the whole database.
 
-```
+```sql
 VERIFY "<table>"
 VERIFY ALL
 VERIFY record #<id>
@@ -188,7 +188,7 @@ VERIFY record #42
 ```
 
 Output:
-```
+```text
 Verifying table "sales"... 1,042 records
   ✓ Hash chain intact
   ✓ All signatures valid
@@ -199,7 +199,7 @@ Overall: INTEGRITY VERIFIED
 ```
 
 If tampering is detected:
-```
+```text
   ✗ Hash chain broken at record #317
     Expected prev_hash: 9f3a...bc
     Found prev_hash:    0000...00
@@ -210,7 +210,7 @@ If tampering is detected:
 
 ### 4.6 Aggregations
 
-```
+```sql
 COUNT FROM "<table>" WHERE <filter>
 SUM <field> FROM "<table>" WHERE <filter>
 AVG <field> FROM "<table>" WHERE <filter>
@@ -229,7 +229,7 @@ AVG amount FROM "sales"
 
 ### 4.7 `GROUP BY`
 
-```
+```sql
 READ FROM "<table>" WHERE <filter> GROUP BY <field> [COUNT | SUM <field>]
 ```
 
@@ -245,7 +245,7 @@ READ FROM "sales" GROUP BY currency SUM amount
 
 List all tables in the database.
 
-```
+```sql
 TABLES
 ```
 
@@ -255,7 +255,7 @@ TABLES
 
 Show database status (tree head, record count, last write time).
 
-```
+```sql
 STATUS
 ```
 

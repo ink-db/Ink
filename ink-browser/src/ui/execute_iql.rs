@@ -473,11 +473,8 @@ impl ExecuteIqlView {
                     .corner_radius(4.0)
                     .show(ui, |ui| {
                         ui.heading(
-                            RichText::new(format!(
-                                "Record #{} Appended Successfully",
-                                summary.id
-                            ))
-                            .color(Color32::GREEN),
+                            RichText::new(format!("Record #{} Appended Successfully", summary.id))
+                                .color(Color32::GREEN),
                         );
                         ui.label(format!("Table: {}", summary.table));
                         ui.label(format!("Hash: {}", summary.hash));

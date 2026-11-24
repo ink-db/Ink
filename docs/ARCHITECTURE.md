@@ -37,7 +37,7 @@ The access registry defines `admin`, `writer`, `reader`, and `auditor` roles. Ad
 
 ## Network model
 
-`ink-proto` encodes IWP frames with a fixed header, bounded payload length, and checksums. `ink-server` and `ink-client` provide the TCP service and client implementation. The current TCP transport is unencrypted; TLS configuration fields are not connected to transport encryption. `docs/PROTOCOL.md` describes message layouts and `AUDIT.md` records the current security findings.
+`ink-proto` encodes IWP frames with a fixed header, bounded payload length, and checksums. `ink-server` and `ink-client` provide the TCP service and client implementation. The current TCP transport is unencrypted; TLS configuration fields are not connected to transport encryption. `docs/PROTOCOL.md` describes message layouts.
 
 ## Desktop application
 

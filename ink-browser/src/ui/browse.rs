@@ -535,23 +535,13 @@ impl BrowseView {
 
                             // Row Action Buttons
                             ui.horizontal(|ui| {
-                                if ui
-                                    .button("Details")
-                                    .clicked()
-                                {
+                                if ui.button("Details").clicked() {
                                     selected_detail = Some(rec.clone());
                                 }
-                                if ui
-                                    .button("History")
-                                    .clicked()
-                                {
+                                if ui.button("History").clicked() {
                                     selected_history = Some(rec.id);
                                 }
-                                if can_write
-                                    && ui
-                                        .button("Correct")
-                                        .clicked()
-                                {
+                                if can_write && ui.button("Correct").clicked() {
                                     selected_correct = Some(rec.clone());
                                 }
                             });

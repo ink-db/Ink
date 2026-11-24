@@ -169,7 +169,8 @@ impl ProofsView {
 }
 
 fn read_proof_file(path: &std::path::Path) -> Result<InclusionProof, String> {
-    let file = fs::File::open(path).map_err(|error| format!("Could not read proof file: {error}"))?;
+    let file =
+        fs::File::open(path).map_err(|error| format!("Could not read proof file: {error}"))?;
     let mut bytes = Vec::new();
     file.take(MAX_PROOF_FILE_SIZE + 1)
         .read_to_end(&mut bytes)
@@ -182,4 +183,105 @@ fn read_proof_file(path: &std::path::Path) -> Result<InclusionProof, String> {
     }
     serde_json::from_slice::<InclusionProof>(&bytes)
         .map_err(|error| format!("Invalid proof JSON: {error}"))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::LocalBackend;
+    use ink_core::auth::Role;
+    use ink_core::{Keypair, Store};
+    use tempfile::tempdir;
+
+    #[test]
+    fn test_proofs_view_initial_state() {
+        let view = ProofsView::default();
+        assert!(view.record_id_input.is_empty());
+        assert!(view.proof.is_none());
+        assert!(view.proof_valid.is_none());
+        assert!(view.status.is_none());
+        assert!(view.error.is_none());
+    }
+
+    #[test]
+    fn test_read_proof_file_roundtrip_and_validation() {
+        let dir = tempdir().expect("tempdir");
+        let valid_proof = InclusionProof {
+            leaf_index: 0,
+            tree_size: 1,
+            root_hash: "abcd".to_string(),
+            record_hash: "ef01".to_string(),
+            audit_path: vec![],
+        };
+
+        let file_path = dir.path().join("proof.json");
+        fs::write(&file_path, serde_json::to_vec(&valid_proof).unwrap()).unwrap();
+
+        let loaded = read_proof_file(&file_path).expect("Must read valid proof");
+        assert_eq!(loaded, valid_proof);
+
+        // Test invalid json
+        let bad_json_path = dir.path().join("bad.json");
+        fs::write(&bad_json_path, b"not valid json").unwrap();
+        assert!(read_proof_file(&bad_json_path).is_err());
+
+        // Test oversized file (> 64 KiB)
+        let large_path = dir.path().join("oversized.json");
+        let zeros = vec![b' '; (MAX_PROOF_FILE_SIZE + 10) as usize];
+        fs::write(&large_path, zeros).unwrap();
+        let err = read_proof_file(&large_path).expect_err("Must reject oversized proof file");
+        assert!(err.contains("size limit"));
+    }
+
+    #[test]
+    fn test_generate_proof_with_backend() {
+        let dir = tempdir().expect("tempdir");
+        let admin_kp = Keypair::generate();
+        let (mut store, _) =
+            Store::init_with_admin(dir.path(), Some(admin_kp.clone())).expect("init");
+
+        store
+            .grant(
+                &admin_kp,
+                admin_kp.public_key(),
+                "admin",
+                Role::Writer,
+                vec!["*".into()],
+                None,
+            )
+            .expect("grant writer");
+        store
+            .grant(
+                &admin_kp,
+                admin_kp.public_key(),
+                "admin",
+                Role::Reader,
+                vec!["*".into()],
+                None,
+            )
+            .expect("grant reader");
+        drop(store);
+
+        let backend = LocalBackend::open(dir.path(), admin_kp).expect("open backend");
+        let append_res = backend
+            .append_record("events", serde_json::json!({ "type": "login" }))
+            .expect("append");
+
+        // Invalid record id
+        let mut view = ProofsView {
+            record_id_input: "not-a-number".into(),
+            ..Default::default()
+        };
+        view.generate(&backend);
+        assert!(view.error.is_some());
+        assert!(view.proof.is_none());
+
+        // Valid record id
+        view.record_id_input = append_res.id.to_string();
+        view.generate(&backend);
+        assert!(view.error.is_none());
+        assert_eq!(view.proof_valid, Some(true));
+        let p = view.proof.as_ref().expect("proof");
+        assert_eq!(p.leaf_index, append_res.id);
+    }
 }
